@@ -1,0 +1,18 @@
+﻿@model mvcSite.ViewModels.Movie.MovieViewModel
+
+@{
+    ViewBag.Title = "movie information";
+}
+
+<h1>Movie information</h1>
+<div class="name" runat="server">
+    @Model.Name
+</div>
+<div class="info info--information">
+    <div class="description">
+        @Model.Description
+    </div>
+</div>
+<div class="back">
+    <button ID="BackButton" class="back__button">@Html.ActionLink("<< Back", "Index", "Home")</button>
+</div>

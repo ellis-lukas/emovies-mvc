@@ -1,0 +1,17 @@
+﻿@model mvcSite.ViewModels.Home.MovieOrderRow
+
+<div class="table-row">
+    @Html.HiddenFor(m => m.MovieID)
+
+    @Html.HiddenFor(m => m.Name)
+
+    @Html.ActionLink(Model.Name.ToString(), "Index", "Movie", new { id = Model.MovieID }, new { @class = "table-row__cell table-row__cell--movie table-row__cell--blue", @readonly = "readonly" })
+
+    @Html.TextBoxFor(m => m.Quantity, new { @class = "table-row__cell table-row__cell--quantity table-row__cell--white", @type = "number" })
+
+    <span class="table-row__cell table-row__cell--price table-row__cell--blue">
+        @Html.DisplayFor(m => m.Price)
+    </span>
+    @Html.HiddenFor(m => m.Price, new { @class="table-row__price-currencyless" })
+</div>
+

@@ -1,0 +1,73 @@
+﻿@import "../mixins/mixins.LESS";
+
+.table {
+}
+
+.table-heading {
+    height: 32px;
+    line-height: 32px;
+    margin-bottom: 8px;
+    text-align: left;
+
+    &__cell {
+        float: left;
+        padding: 0 2px;
+
+        &--movie {
+            width: 332px;
+        }
+
+        &--quantity {
+            margin: 0 16px;
+            width: 172px;
+        }
+
+        &--price {
+            width: 100px;
+        }
+    }
+}
+
+.table-row {
+    height: 32px;
+    margin-bottom: 16px;
+
+    &__cell {
+        float: left;
+        font-size: 24px;
+        font-family: calibri, sans-serif;
+
+        &--movie {
+            width: 314px;
+            padding: 0 10px;
+            text-decoration: none;
+            color: black;
+        }
+
+        &--quantity {
+            margin: 0 16px;
+            padding-left: 10px;
+            width: 160px;
+            text-align: center;
+        }
+
+        &--price {
+            width: 82px;
+            text-align: center;
+            padding: 0 10px;
+        }
+
+        &--blue {
+            .blue-cell();
+        }
+
+        &--white {
+            background-color: #fff;
+            background-image: none;
+            border: 3px solid #4bacc6;
+            border-radius: 2px;
+            height: 26px;
+            line-height: 26px;
+        }
+    }
+}

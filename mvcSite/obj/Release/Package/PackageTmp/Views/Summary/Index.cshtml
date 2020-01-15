@@ -1,0 +1,47 @@
+﻿@model mvcSite.ViewModels.Summary.SummaryViewModel
+
+@{
+    ViewBag.Title = "order confirmation";
+}
+
+<h1>Order confirmation</h1>
+<div class="info info--confirmation">
+    <div class="form">
+        <h2>Your details</h2>
+        <div class="form-row form-row--upper">
+            <div class="form-row__label-input-container">
+                <div class="form-row__cell form-row__cell--label">Name</div>
+                <div id="Name" class="form-row__cell form-row__cell--output">@Model.Name</div>
+            </div>
+        </div>
+        <div class="form-row form-row--upper">
+            <div class="form-row__label-input-container">
+                <div class="form-row__cell form-row__cell--label">Email</div>
+                <div id="Email" class="form-row__cell form-row__cell--output">@Model.Email</div>
+            </div>
+        </div>
+        <div class="form-row form-row--upper">
+            <div class="form-row__label-input-container">
+                <div class="form-row__cell form-row__cell--label">Credit card number</div>
+                <div id="CardNumber" class="form-row__cell form-row__cell--output">@Model.CardNumber</div>
+            </div>
+        </div>
+        <div class="form-row form-row--lower">
+            <div class="form-row__label-input-container">
+                <div class="form-row__cell form-row__cell--label">Credit card type</div>
+                <div id="CardType" class="form-row__cell form-row__cell--output">@Model.CardType</div>
+            </div>
+        </div>
+        <div class="form-row form-row--lower">
+            <div class="form-row__label-input-container">
+                <div class="form-row__cell form-row__cell--label form-row__cell--shifted">Please email me<br>future promotions</div>
+                <div id="FuturePromotions" class="form-row__cell form-row__cell--output">@Model.FuturePromotions</div>
+            </div>
+        </div>
+    </div>
+    <div class="summary">
+        <h2>Your tickets</h2>
+        @Html.DisplayFor(m => m.SummaryRows)
+    </div>
+</div>
+

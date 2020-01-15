@@ -1,0 +1,85 @@
+﻿@import "../mixins/mixins.LESS";
+
+button {
+    border: none;
+    color: #fff;
+    font-size: 1em;
+    outline: none;
+}
+
+.update {
+    height: 32px;
+    margin-top: 15px;
+    position: relative;
+
+    &__button {
+        background-image: linear-gradient(#9ac445,#7b9b39);
+        box-shadow: 0px 2px 2px #aaa;
+        height: 32px;
+        position: absolute;
+        right: 0;
+        width: 184px;
+        top: 0px;
+        color: #fff;
+        font-size: 1em;
+        outline: none;
+        border-top: 5px outset #96cc2a;
+        border-left: 5px outset #7fa03b;
+        border-right: 5px outset #b0f525;
+        border-bottom: none;
+        overflow: visible;
+        text-align: center;
+        &:active {
+            .button-animation();
+        }
+    }
+}
+
+.order {
+    height: 40px;
+    position: relative;
+
+    &--order-now {
+        margin-top: 14px;
+    }
+
+    &--submit-order {
+        margin-top: 24px;
+    }
+
+    &__button {
+        .nav-button-general-styling();
+        position: absolute;
+        right: 0;
+        width: 264px;
+        .nav-button-general-styling();
+
+        &:active {
+            .button-animation();
+        }
+    }
+}
+
+.back {
+    height: 40px;
+    position: relative;
+    margin-top: 14px;
+
+    &__button {
+        .nav-button-general-styling();
+        position: absolute;
+        left: 0;
+        width: 176px;
+        color: #fff;
+        font-size: 1em;
+
+        & a {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        &:active {
+            .button-animation();
+        }
+    }
+}

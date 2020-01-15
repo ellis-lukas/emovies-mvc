@@ -1,0 +1,131 @@
+﻿input {
+    outline: none;
+}
+
+select {
+    outline: none;
+}
+
+.form {
+}
+
+.form-row {
+    &--upper {
+        margin-bottom: 16px;
+        height: 32px;
+    }
+
+    &--lower {
+        height: 32px;
+        margin-top: 24px;
+        margin-bottom: 16px;
+    }
+
+    &__label-input-container {
+        height: 32px;
+    }
+
+    &__cell {
+        float: left;
+
+        &--label {
+            width: 222px;
+            padding-right: 10px;
+            line-height: 32px;
+            text-align: right;
+        }
+
+        &--input {
+            margin-left: 40px;
+            line-height: 26px;
+        }
+
+        &--text {
+            width: 360px;
+            padding: 0 5px;
+        }
+
+        &--select {
+            display: block;
+            height: 32px;
+            width: 192px;
+            padding: 0 5px;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("../Images/diamond.png");
+            background-repeat: no-repeat;
+            background-position: 150px 3px;
+            background-size: 35px 25px;
+        }
+
+        &--white {
+            background-color: #fff;
+            border: 3px solid #4bacc6;
+            border-radius: 2px;
+            line-height: 26px;
+        }
+
+        &--checkbox-container {
+            height: 18px;
+            width: 18px;
+        }
+
+        &--shifted {
+            bottom: 16px;
+            position: relative;
+        }
+
+        &--output {
+            padding-left: 10px;
+            width: 366px;
+            height: 32px;
+            line-height: 32px;
+            text-align: left;
+            margin-left: 40px;
+        }
+
+        &--invalid-required {
+            border-color: red;
+        }
+
+        &--invalid-regular-expression {
+            border-color: red;
+        }
+    }
+
+    &__check-image {
+        display: block;
+        height: 18px;
+        width: 18px;
+        float: left;
+        background-size: cover;
+    }
+
+    &__checkbox {
+        display: none;
+    }
+
+    &__label-input-pair {
+        height: 32px;
+    }
+
+    &__validators-container {
+        position: relative;
+        left: 290px;
+    }
+
+    &__validator {
+        font-size: 17px;
+        color: red;
+    }
+}
+
+
+/*These classes are added to validator callout extenders (VCEs). VCEs enable classes to be added to invalid inputs. We don't want to see the VCEs, though!*/
+.required-extender {
+    display: none;
+}
+
+.regular-expression-extender {
+    display: none;
+}

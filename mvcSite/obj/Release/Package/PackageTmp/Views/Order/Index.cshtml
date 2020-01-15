@@ -1,0 +1,62 @@
+﻿@model mvcSite.ViewModels.Order.OrderViewModel
+
+@{
+    ViewBag.Title = "order";
+}
+
+@using (Html.BeginForm())
+{
+
+    <h1>Order</h1>
+    <div class="info info--order">
+        <div class="form">
+            <div class="form-row form-row--upper">
+                @Html.LabelFor(m => m.Name, htmlAttributes: new { @class = "form-row__cell form-row__cell--label" })
+                @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-row__cell form-row__cell--input form-row__cell--text form-row__cell--white form-row__cell--name" } })
+                @Html.ValidationMessageFor(m => m.Name, null, new { @class = "form-row__validation-message" })
+            </div>
+
+            <div class="form-row form-row--upper">
+                @Html.LabelFor(m => m.Email, htmlAttributes: new { @class = "form-row__cell form-row__cell--label" })
+                @Html.EditorFor(m => m.Email, new { htmlAttributes = new { @class = "form-row__cell form-row__cell--input form-row__cell--text form-row__cell--white form-row__cell--email" } })
+                @Html.ValidationMessageFor(m => m.Email, null, new { @class = "form-row__validation-message" })
+            </div>
+
+            <div class="form-row form-row--upper">
+                @Html.LabelFor(m => m.CardNumber, "Card Number", htmlAttributes: new { @class = "form-row__cell form-row__cell--label" })
+                @Html.EditorFor(m => m.CardNumber, new { htmlAttributes = new { @class = "form-row__cell form-row__cell--input form-row__cell--text form-row__cell--white form-row__cell--card-number" } })
+                @Html.ValidationMessageFor(m => m.CardNumber, null, htmlAttributes: new { @class = "form-row__validation-message" })
+            </div>
+
+            <div class="form-row form-row--lower">
+                <div class="form-row__label-input-container">
+                    @*<label for="CardType" class="form-row__cell form-row__cell--label">@Html.DisplayNameFor(m => m.CardType)</label>*@
+                    @*@Html.DropDownList("CardType", (SelectList)ViewBag.CardType, htmlAttributes: new { @class = "form-row__cell--card-type form-row__cell form-row__cell--input form-row__cell--select form-row__cell--white" })*@
+                    @Html.LabelFor(m => m.CardType, htmlAttributes: new { @class = "form-row__cell form-row__cell--label" })
+                    @Html.EnumDropDownListFor(m => m.CardType, new { @class = "form-group form-row__cell--card-type form-row__cell form-row__cell--input form-row__cell--select form-row__cell--white" })
+                </div>
+            </div>
+
+            <div class="form-row form-row--lower">
+                <div class="form-row__label-input-container">
+                    <label for="FuturePromotions" class="form-row__cell form-row__cell--label form-row__cell--shifted">Please email me<br>future promotions</label>
+                    <div class="form-row__cell form-row__cell--input form-row__cell--checkbox-container form-row__cell--white">
+                        <span class="form-row__checkbox">
+                            @*<input type="checkbox" class="form-row__checkbox" id="FuturePromotions" />*@
+                            @Html.CheckBoxFor(m => m.FuturePromotions, new { @class = "form-row__checkbox", id="FuturePromotions" })
+                        </span>
+                        <label for="FuturePromotions" id="CheckImage" class="form-row__check-image" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="order order--submit-order">
+        <input type="submit" class="order__button" Text="Submit order >>" />
+    </div>
+ 
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+        <script src="@Url.Content("~/Scripts/ViewScripts/Order.js")"></script>
+    }
+}

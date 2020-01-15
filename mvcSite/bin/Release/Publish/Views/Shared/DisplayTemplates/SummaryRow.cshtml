@@ -1,0 +1,6 @@
+﻿@model mvcSite.ViewModels.Summary.SummaryRow
+
+<div class="summary-row">
+    <div class="summary-row__cell summary-row__cell--movie">@Html.DisplayFor(m => m.Name)</div>
+    <div class="summary-row__cell summary-row__cell--order">@Html.DisplayFor(m => m.Quantity) x @Html.DisplayFor(m => m.Price)</div>
+</div>

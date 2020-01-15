@@ -1,0 +1,38 @@
+﻿@import "config/typography.LESS";
+@import "layout/containers.LESS";
+@import "layout/notices.LESS";
+@import "modules/table.LESS";
+@import "modules/form.LESS";
+@import "modules/information.LESS";
+@import "modules/summary.LESS";
+@import "patterns/total.LESS";
+@import "patterns/buttons.LESS";
+@import "mixins/mixins.LESS";
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-size: 24px;
+}
+
+.form-row__cell--input.has-error {
+    border-color: red;
+}
+
+.form-row.has-error {
+    margin-bottom: 0;
+    height: auto;
+}
+
+.form-row.has-error .form-row__validation-message{
+    display: block;
+    margin-left: 270px;
+    margin-bottom: 20px;
+    margin-top: 10px;
+    color: red;
+}
+
+
