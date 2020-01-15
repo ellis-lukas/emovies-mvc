@@ -1,0 +1,37 @@
+﻿@model mvcSite.ViewModels.Home.HomeViewModel
+
+@{
+    ViewBag.Title = "browse movie tickets";
+}
+
+@using (Html.BeginForm())
+{
+    <h1>Browse movie tickets</h1>
+    <div class="info info--movie">
+        <div class="table">
+            <div class="table-heading">
+                <div class="table-heading__cell table-heading__cell--movie">Movie</div>
+                <div class="table-heading__cell table-heading__cell--quantity">Quantity</div>
+                <div class="table-heading__cell table-heading__cell--price">Price</div>
+            </div>
+            @Html.EditorFor(m => m.MovieOrderRows)
+        </div>
+        <div class="total total--table">
+            <div class="total__cell total__cell--label total__cell--label-table">Total</div>
+            <div class="total__cell total__cell--value total__cell--value-table"></div>
+        </div>
+        <div class="update">
+            <input class="update__button" onclick="updateClicked" value="Update" readonly="readonly">
+        </div>
+    </div>
+    <div class="notice">Tickets are only valid for use on the day of purchase</div>
+    <div class="order order--order-now">
+        <input type="submit" class="order__button" Text="Order now >>" />
+    </div>
+    @Html.ValidationMessageFor(m => m.MovieOrderRows);
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="@Url.Content("~/Scripts/ViewScripts/Home.js")"></script>
+}
