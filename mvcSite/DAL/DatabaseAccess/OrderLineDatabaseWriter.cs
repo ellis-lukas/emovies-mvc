@@ -11,30 +11,33 @@ namespace mvcSite.DAL.DatabaseAccess
 {
     public class OrderLineDatabaseWriter : IOrderLineWriter
     {
-        private SqlParameter ReturnParameter;
-
         public void WriteOrderLine(OrderLine orderLine)
         {
-            SqlCommand orderLineWriteCommand = new SqlCommand
+            SqlConnection databaseConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["database"].ConnectionString);
+
+            using (databaseConnection)
             {
-                Connection = new SqlConnection(ConfigurationManager.ConnectionStrings["database"].ConnectionString),
-                CommandType = CommandType.StoredProcedure,
-                CommandText = "AddNewOrderLine"
-            };
+                databaseConnection.Open();
 
-            AddParametersToCommandFromOrderLineData(orderLineWriteCommand, orderLine);
+                SqlCommand orderLineWriteCommand = new SqlCommand
+                {
+                    Connection = databaseConnection,
+                    CommandType = CommandType.StoredProcedure,
+                    CommandText = "AddNewOrderLine"
+                };
 
-            ReturnParameter = new SqlParameter("@RETURN_VALUE", SqlDbType.Int)
-            {
-                Direction = ParameterDirection.ReturnValue
-            };
-            orderLineWriteCommand.Parameters.Add(ReturnParameter);
+                AddParametersToCommandFromOrderLineData(orderLineWriteCommand, orderLine);
 
-            orderLineWriteCommand.Connection.Open();
+                SqlParameter returnParameter = new SqlParameter("@RETURN_VALUE", SqlDbType.Int)
+                {
+                    Direction = ParameterDirection.ReturnValue
+                };
+                orderLineWriteCommand.Parameters.Add(returnParameter);
 
-            using (orderLineWriteCommand)
-            {
-                orderLineWriteCommand.ExecuteReader();
+                using (orderLineWriteCommand)
+                {
+                    orderLineWriteCommand.ExecuteReader();
+                }
             }
         }
 
@@ -42,14 +45,16 @@ namespace mvcSite.DAL.DatabaseAccess
         {
             orderLineWriteCommand.Parameters.Add("@OrderId", SqlDbType.Int).Value = orderLine.OrderID;
             orderLineWriteCommand.Parameters.Add("@MovieId", SqlDbType.Int).Value = orderLine.MovieID;
-            orderLineWriteCommand.Parameters.Add("@Price", SqlDbType.Decimal).Value = orderLine.Price;
-            orderLineWriteCommand.Parameters.Add("@Quantity", SqlDbType.TinyInt).Value = orderLine.Quantity;
-        }
 
-        public int GetLastWrittenEntryAssignedID()
-        {
-            int lastAddedEntryID = Convert.ToInt32(ReturnParameter.Value);
-            return lastAddedEntryID;
+            orderLineWriteCommand.Parameters.Add("@Price", SqlDbType.Decimal);
+            orderLineWriteCommand.Parameters["@Price"].Precision = 19;
+            orderLineWriteCommand.Parameters["@Price"].Scale = 4;
+            orderLineWriteCommand.Parameters["@Price"].Value = orderLine.Price;
+
+            orderLineWriteCommand.Parameters.Add("@Quantity", SqlDbType.TinyInt).Value = orderLine.Quantity;
+
+            
+
         }
     }
 }

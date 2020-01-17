@@ -16,14 +16,9 @@ namespace mvcSite.Repositories
             _orderWriter = orderWriter;
         }
 
-        public void WriteOrder(Order order)
+        public int WriteOrder(Order order)
         {
-            _orderWriter.WriteOrder(order);
-        }
-
-        public int GetLastWrittenEntryAssignedID()
-        {
-            return _orderWriter.GetLastWrittenEntryAssignedID();
+            return _orderWriter.WriteOrder(order);
         }
     }
 }

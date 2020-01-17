@@ -8,14 +8,15 @@ function updateClicked() {
 }
 
 function updateTotal() {
-    console.log("jel");
     totalValueCell.innerHTML = "£" + calculateTotal().toFixed(2);
 }
 
 function calculateTotal() {
     var total = 0.0;
-    movieList.forEach
-        ((movie) => { total += individualMovieTotal(movie); });
+    for (var i = 0; i < movieList.length; i++) {
+        var movie = movieList[i];
+        total += individualMovieTotal(movie);
+    }
     return total;
 }
 
@@ -107,5 +108,3 @@ function ClientValidateInRange(sender, args) {
 
 totalValueCell.innerHTML = "£" + 0.00.toFixed(2);
 updateButton.addEventListener("click", updateClicked);
-
-

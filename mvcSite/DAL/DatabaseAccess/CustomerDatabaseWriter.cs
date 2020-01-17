@@ -1,41 +1,46 @@
 ﻿using mvcSite.Models;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Diagnostics;
-using System.Linq;
-using System.Web;
 
 namespace mvcSite.DAL.DatabaseAccess
 {
     public class CustomerDatabaseWriter : ICustomerWriter
     {
-        private SqlParameter ReturnParameter;
-
-        public void WriteCustomer(Customer customer)
+        public int WriteCustomer(Customer customer)
         {
-            SqlCommand customerWriteCommand = new SqlCommand
+            SqlConnection databaseConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["database"].ConnectionString);
+
+            using (databaseConnection)
             {
-                Connection = new SqlConnection(ConfigurationManager.ConnectionStrings["database"].ConnectionString),
-                CommandType = CommandType.StoredProcedure,
-                CommandText = "AddNewCustomer"
-            };
+                databaseConnection.Open();
 
-            AddParametersToCommandFromCustomerData(customerWriteCommand, customer);
+                SqlCommand customerWriteCommand = new SqlCommand
+                {
+                    Connection = databaseConnection,
+                    CommandType = CommandType.StoredProcedure,
+                    CommandText = "AddNewCustomer"
+                };
 
-            ReturnParameter = new SqlParameter("@RETURN_VALUE", SqlDbType.Int)
-            {
-                Direction = ParameterDirection.ReturnValue
-            };
-            customerWriteCommand.Parameters.Add(ReturnParameter);
+                AddParametersToCommandFromCustomerData(customerWriteCommand, customer);
 
-            customerWriteCommand.Connection.Open();
+                SqlParameter returnParameter = new SqlParameter("@RETURN_VALUE", SqlDbType.Int)
+                {
+                    Direction = ParameterDirection.ReturnValue
+                };
+                customerWriteCommand.Parameters.Add(returnParameter);
 
-            using (customerWriteCommand)
-            {
-                customerWriteCommand.ExecuteReader();
+                using (customerWriteCommand)
+                {
+                    customerWriteCommand.ExecuteReader();
+                }
+
+                int IDAssignedToLastWrittenCustomer = GetAssignedID(returnParameter);
+
+
+
+                return IDAssignedToLastWrittenCustomer;
             }
         }
 
@@ -46,12 +51,12 @@ namespace mvcSite.DAL.DatabaseAccess
             customerWriteCommand.Parameters.Add("@CreditCardNumber", SqlDbType.NVarChar).Value = customer.CardNumber;
             customerWriteCommand.Parameters.Add("@CreditCardType", SqlDbType.NVarChar).Value = customer.CardType;
             customerWriteCommand.Parameters.Add("@FuturePromotions", SqlDbType.Bit).Value = customer.FuturePromotions;
-            customerWriteCommand.Parameters.Add("@DateCreated", SqlDbType.DateTime).Value = DateTime.Now;
+            customerWriteCommand.Parameters.Add("@DateCreated", SqlDbType.DateTime).Value = DateTime.UtcNow;//uct.now
         }
 
-        public int GetLastWrittenEntryAssignedID()
+        private int GetAssignedID(SqlParameter returnParameter)
         {
-            int lastAddedEntryID = Convert.ToInt32(ReturnParameter.Value);
+            int lastAddedEntryID = Convert.ToInt32(returnParameter.Value);
             return lastAddedEntryID;
         }
     }

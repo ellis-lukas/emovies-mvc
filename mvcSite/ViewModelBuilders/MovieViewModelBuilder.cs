@@ -1,14 +1,8 @@
-﻿using mvcSite.IEnumerableExtensions;
-using mvcSite.Models;
-using mvcSite.Persistence;
+﻿using mvcSite.Models;
 using mvcSite.Repositories;
-using mvcSite.ViewModels;
 using mvcSite.ViewModels.Movie;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
-using System.Web;
 
 namespace mvcSite.ViewModelBuilders
 {
@@ -20,34 +14,23 @@ namespace mvcSite.ViewModelBuilders
         {
             _movieRepository = movieRepository;
         }
- 
+
         public MovieViewModel BuildMovieViewModel(int id)
         {
-            IEnumerable<Movie> currentMovies = _movieRepository.GetMovies();
-            List<Movie> currentMovieList = currentMovies.ToList();
+            Movie movieSelected = _movieRepository.GetMovieByID(id);//better to use the GetMovie() method here
 
-            try
+            if (movieSelected == null)
             {
-                Movie movieSelected = currentMovieList.Find(movie => movie.ID == id);
-
-                MovieViewModel movieData = new MovieViewModel
-                {
-                    Name = movieSelected.Name,
-                    Description = movieSelected.Description
-                };
-
-                return movieData;
+                return null;
             }
-            catch
+
+            MovieViewModel movieData = new MovieViewModel
             {
-                MovieViewModel errorViewModel = new MovieViewModel
-                {
-                    Name = "Error",
-                    Description = "Movie Not Found"
-                };
+                Name = movieSelected.Name,
+                Description = movieSelected.Description
+            };
 
-                return errorViewModel;
-            }
+            return movieData;
         }
     }
 }

@@ -4,15 +4,20 @@
     ViewBag.Title = "movie information";
 }
 
-<h1>Movie information</h1>
-<div class="name" runat="server">
-    @Model.Name
-</div>
-<div class="info info--information">
-    <div class="description">
-        @Model.Description
+@using (Html.BeginForm())
+{
+    <h1>Movie information</h1>
+    <div class="name" runat="server">
+        @Model.Name
     </div>
-</div>
-<div class="back">
-    <button ID="BackButton" class="back__button">@Html.ActionLink("<< Back", "Index", "Home")</button>
-</div>
+    <div class="info-wrapper" style="display:flex;">
+        <div class="info info--information" style="width:100%;">
+            <div class="description">
+                @Model.Description
+            </div>
+        </div>
+    </div>
+    <div class="back">
+        <button type="submit" id="BackButton" class="back__button"><< Back</button>
+    </div>
+}    

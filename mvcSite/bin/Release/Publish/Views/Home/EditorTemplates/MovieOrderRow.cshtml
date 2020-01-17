@@ -1,13 +1,14 @@
 ﻿@model mvcSite.ViewModels.Home.MovieOrderRow
+@using mvcSite.UrlFriendlyConfiguration
 
 <div class="table-row">
     @Html.HiddenFor(m => m.MovieID)
 
     @Html.HiddenFor(m => m.Name)
 
-    @Html.ActionLink(Model.Name.ToString(), "Index", "Movie", new { id = Model.MovieID }, new { @class = "table-row__cell table-row__cell--movie table-row__cell--blue", @readonly = "readonly" })
+    @Html.ActionLink(Model.Name.ToString(), "Index", "Movie", new { id = Model.MovieID, movieName = Model.Name.ToSeoUrl()}, new { @class = "table-row__cell table-row__cell--movie table-row__cell--blue", @readonly = "readonly" })
 
-    @Html.TextBoxFor(m => m.Quantity, new { @class = "table-row__cell table-row__cell--quantity table-row__cell--white", @type = "number" })
+    @Html.TextBoxFor(m => m.Quantity, new { @class = "table-row__cell table-row__cell--quantity table-row__cell--white" })
 
     <span class="table-row__cell table-row__cell--price table-row__cell--blue">
         @Html.DisplayFor(m => m.Price)

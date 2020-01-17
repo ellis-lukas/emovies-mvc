@@ -20,10 +20,5 @@ namespace mvcSite.Repositories
         {
             _orderLineWriter.WriteOrderLine(orderLine);
         }
-
-        public int GetLastWrittenEntryAssignedID()
-        {
-            return _orderLineWriter.GetLastWrittenEntryAssignedID();
-        }
     }
 }

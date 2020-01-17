@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace mvcSite.DAL
 {
-    public interface IOrderWriter: IWriter
+    public interface IOrderWriter
     {
-        public void WriteOrder(Order order);
+        public int WriteOrder(Order order);
     }
 }

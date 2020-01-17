@@ -268,14 +268,12 @@
     <Compile Include="DAL\ICustomerWriter.cs" />
     <Compile Include="DAL\IOrderLineWriter.cs" />
     <Compile Include="DAL\IOrderWriter.cs" />
-    <Compile Include="DAL\IWriter.cs" />
     <Compile Include="DAL\IMovieReader.cs" />
+    <Compile Include="DependencyInjection\DependencyResolverRegistration.cs" />
     <Compile Include="DomainLayer\OrderCreationService.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="IEnumerableExtensions\IEnumerableMovieOrderRowExtension.cs" />
-    <Compile Include="IEnumerableExtensions\IEnumerableOrderLineExtension.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Movie.cs" />
     <Compile Include="Models\Order.cs" />
@@ -289,6 +287,7 @@
     <Compile Include="Repositories\OrderLineRepository.cs" />
     <Compile Include="Repositories\OrderRepository.cs" />
     <Compile Include="Repositories\StagedDataForWriting.cs" />
+    <Compile Include="UrlFriendlyConfiguration\StringHelpers.cs" />
     <Compile Include="ViewModelBuilders\HomeViewModelBuilder.cs" />
     <Compile Include="ViewModelBuilders\OrderViewModelBuilder.cs" />
     <Compile Include="ViewModelBuilders\SummaryPackage.cs" />
@@ -355,8 +354,7 @@
     <Content Include="Views\Summary\Index.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\EditorTemplates\MovieOrderRow.cshtml" />
-    <Content Include="Views\Shared\DisplayTemplates\SummaryRow.cshtml" />
-    <Content Include="Views\Shared\DisplayTemplates\SummaryViewModel.cshtml" />
+    <Content Include="Views\Summary\DisplayTemplates\SummaryRow.cshtml" />
     <Content Include="Views\Movie\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>

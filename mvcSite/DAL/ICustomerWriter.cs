@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace mvcSite.DAL
 {
-    public interface ICustomerWriter: IWriter
+    public interface ICustomerWriter
     {
-        public void WriteCustomer(Customer customer);
+        public int WriteCustomer(Customer customer);
     }
 }

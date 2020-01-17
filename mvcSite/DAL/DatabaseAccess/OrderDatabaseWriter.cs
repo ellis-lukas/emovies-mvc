@@ -8,43 +8,50 @@ namespace mvcSite.DAL.DatabaseAccess
 {
     public class OrderDatabaseWriter : IOrderWriter
     {
-        private SqlParameter ReturnParameter;
-
-        public void WriteOrder(Order order)
+        public int WriteOrder(Order order)
         {
-            SqlCommand orderWriteCommand = new SqlCommand
+            SqlConnection databaseConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["database"].ConnectionString);
+
+            using (databaseConnection)
             {
-                Connection = new SqlConnection(ConfigurationManager.ConnectionStrings["database"].ConnectionString),
-                CommandType = CommandType.StoredProcedure,
-                CommandText = "AddNewOrder"
-            };
+                databaseConnection.Open();
 
-            AddParametersToCommandFromOrderData(orderWriteCommand, order);
+                SqlCommand orderWriteCommand = new SqlCommand
+                {
+                    Connection = databaseConnection,
+                    CommandType = CommandType.StoredProcedure,
+                    CommandText = "AddNewOrder"
+                };
 
-            ReturnParameter = new SqlParameter("@RETURN_VALUE", SqlDbType.Int)
-            {
-                Direction = ParameterDirection.ReturnValue
-            };
-            orderWriteCommand.Parameters.Add(ReturnParameter);
+                AddParametersToCommandFromOrderData(orderWriteCommand, order);
 
-            orderWriteCommand.Connection.Open();
+                SqlParameter returnParameter = new SqlParameter("@RETURN_VALUE", SqlDbType.Int)
+                {
+                    Direction = ParameterDirection.ReturnValue
+                };
+                orderWriteCommand.Parameters.Add(returnParameter);
 
-            using (orderWriteCommand)
-            {
-                orderWriteCommand.ExecuteReader();
+                using (orderWriteCommand)
+                {
+                    orderWriteCommand.ExecuteReader();
+                }
+
+                int IDAssignedToLastWrittenOrder = GetAssignedID(returnParameter);
+
+                return IDAssignedToLastWrittenOrder;
             }
         }
 
         private void AddParametersToCommandFromOrderData(SqlCommand orderWriteCommand, Order order)
         {
-            orderWriteCommand.Parameters.Add("@DateCreated", SqlDbType.DateTime).Value = DateTime.Now;
+            orderWriteCommand.Parameters.Add("@DateCreated", SqlDbType.DateTime).Value = DateTime.UtcNow;
             orderWriteCommand.Parameters.Add("@Total", SqlDbType.Decimal).Value = order.Total;
             orderWriteCommand.Parameters.Add("@CustomerId", SqlDbType.Int).Value = order.CustomerID;
         }
 
-        public int GetLastWrittenEntryAssignedID()
+        public int GetAssignedID(SqlParameter returnParamter)
         {
-            int lastAddedEntryID = Convert.ToInt32(ReturnParameter.Value);
+            int lastAddedEntryID = Convert.ToInt32(returnParamter.Value);
             return lastAddedEntryID;
         }
     }

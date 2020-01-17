@@ -43,6 +43,7 @@ select {
         &--text {
             width: 360px;
             padding: 0 5px;
+            height: 26px;
         }
 
         &--select {
@@ -57,6 +58,10 @@ select {
             background-position: 150px 3px;
             background-size: 35px 25px;
         }
+
+            &::-ms-expand {
+                display: none;
+            }
 
         &--white {
             background-color: #fff;

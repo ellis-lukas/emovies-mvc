@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace mvcSite.DAL
 {
-    public interface IOrderLineWriter: IWriter
+    public interface IOrderLineWriter
     {
         public void WriteOrderLine(OrderLine orderLine);
     }

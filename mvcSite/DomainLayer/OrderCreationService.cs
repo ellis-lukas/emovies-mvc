@@ -1,10 +1,7 @@
-﻿using mvcSite.IEnumerableExtensions;
-using mvcSite.Models;
+﻿using mvcSite.Models;
 using mvcSite.Repositories;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace mvcSite.DAL
 {
@@ -27,47 +24,43 @@ namespace mvcSite.DAL
             _orderLineRepository = orderLineRepository;
         }
 
-        public void CreateOrders(StagedDataForWriting stagedData)
+        public void CreateOrders(StagedDataForWriting stagedData)//orderlines not being saved to the database. fix.
         {
             Customer customerToWrite = stagedData.Customer;
-            IEnumerable<OrderLine> orderLinesOrderIDsUnassigned = stagedData.OrderLines;
+            IEnumerable<OrderLine> orderLines = stagedData.OrderLines;
+            decimal orderTotal = stagedData.Total;
 
-            WriteCustomer(customerToWrite);
+            int IDAssignedToLastWrittenCustomer = WriteCustomer(customerToWrite);
 
-            int writtenCustomerAssignedID = GetLastWrittenCustomerID();
             Order orderToWrite = new Order
             {
-                CustomerID = writtenCustomerAssignedID,
-                DateCreated = DateTime.Now,
-                Total = orderLinesOrderIDsUnassigned.Total()
+                CustomerID = IDAssignedToLastWrittenCustomer,
+                DateCreated = DateTime.UtcNow,
+                Total = orderTotal
             };
 
-            WriteOrder(orderToWrite);
+            int IDAssignedToLastWrittenOrder = WriteOrder(orderToWrite);
 
-            int writtenOrderAssignedID = GetLastWrittenOrderID();
-            IEnumerable<OrderLine> orderLinesToWrite = orderLinesOrderIDsUnassigned.AssignWithOrderID(writtenOrderAssignedID);
-
-            WriteOrderLines(orderLinesToWrite);
+            AssignOrderLinesWithOrderID(orderLines, IDAssignedToLastWrittenOrder);
+            WriteOrderLines(orderLines);
         }
 
-        private void WriteCustomer(Customer customerToWrite)
+        private int WriteCustomer(Customer customerToWrite)
         {
-            _customerRepository.WriteCustomer(customerToWrite);
+            return _customerRepository.WriteCustomer(customerToWrite);
         }
 
-        private int GetLastWrittenCustomerID()
+        private int WriteOrder(Order orderToWrite)
         {
-            return _customerRepository.GetLastWrittenEntryAssignedID();
+            return _orderRepository.WriteOrder(orderToWrite);
         }
 
-        private void WriteOrder(Order orderToWrite)
+        private void AssignOrderLinesWithOrderID(IEnumerable<OrderLine> orderLinesOrderIDsUnassigned, int orderID)
         {
-            _orderRepository.WriteOrder(orderToWrite);
-        }
-
-        private int GetLastWrittenOrderID()
-        {
-            return _orderRepository.GetLastWrittenEntryAssignedID();
+            foreach (OrderLine orderLineOrderIDUnassigned in orderLinesOrderIDsUnassigned)
+            {
+                orderLineOrderIDUnassigned.OrderID = orderID;
+            }
         }
 
         private void WriteOrderLines(IEnumerable<OrderLine> orderLinesToWrite)

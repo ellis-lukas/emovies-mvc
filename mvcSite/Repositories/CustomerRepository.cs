@@ -16,14 +16,9 @@ namespace mvcSite.Repositories
             CustomerWriter = customerWriter;
         }
 
-        public void WriteCustomer(Customer customer)
+        public int WriteCustomer(Customer customer)
         {
-            CustomerWriter.WriteCustomer(customer);
-        }
-
-        public int GetLastWrittenEntryAssignedID()
-        {
-            return CustomerWriter.GetLastWrittenEntryAssignedID();
+           return CustomerWriter.WriteCustomer(customer);
         }
     }
 }

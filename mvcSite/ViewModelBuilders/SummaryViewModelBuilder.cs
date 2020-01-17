@@ -1,5 +1,4 @@
-﻿using mvcSite.IEnumerableExtensions;
-using mvcSite.Models;
+﻿using mvcSite.Models;
 using mvcSite.Persistence;
 using mvcSite.Repositories;
 using mvcSite.ViewModels.Summary;
@@ -25,7 +24,7 @@ namespace mvcSite.ViewModelBuilders
         public SummaryViewModel BuildSummaryViewModel()
         {
             Customer customerData = _sessionManager.CustomerData;
-            IEnumerable<OrderLine> orderLines = _sessionManager.NonZeroOrderLines;
+            decimal orderTotal = _sessionManager.Total;
 
             IEnumerable<SummaryRow> summaryRows = BuildSummaryRows();
 
@@ -37,7 +36,7 @@ namespace mvcSite.ViewModelBuilders
                 CardType = customerData.CardType,
                 FuturePromotions = customerData.FuturePromotions ? YesNo.Yes : YesNo.No,
                 SummaryRows = summaryRows,
-                Total = orderLines.Total()
+                Total = orderTotal
             };
 
             return summaryViewModel;
@@ -45,7 +44,7 @@ namespace mvcSite.ViewModelBuilders
 
         public IEnumerable<SummaryRow> BuildSummaryRows()
         {
-            IEnumerable<OrderLine> orderData = _sessionManager.NonZeroOrderLines;
+            IEnumerable<OrderLine> orderData = _sessionManager.OrderLines;
             List<SummaryRow> summaryRows = new List<SummaryRow>();
             
             foreach(OrderLine orderLine in orderData)

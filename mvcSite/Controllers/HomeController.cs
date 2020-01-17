@@ -29,9 +29,7 @@ namespace mvcSite.Controllers
             {
                 try
                 {
-                    ValidateModel(movieOrderData);
-
-                    _homeViewModelBuilder.SaveNonZeroOrderLinesFromHomeViewModel(movieOrderData);
+                    _homeViewModelBuilder.SaveMovieOrderDataFromHomeViewModel(movieOrderData);
 
                     return RedirectToAction("Index", "Order");
                 }

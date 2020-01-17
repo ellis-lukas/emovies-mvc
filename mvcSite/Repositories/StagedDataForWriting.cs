@@ -11,5 +11,7 @@ namespace mvcSite.Repositories
         public Customer Customer { get; set; }
 
         public IEnumerable<OrderLine> OrderLines { get; set; }
+
+        public decimal Total { get; set; }
     }
 }

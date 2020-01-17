@@ -21,12 +21,12 @@
             <div class="total__cell total__cell--value total__cell--value-table"></div>
         </div>
         <div class="update">
-            <input class="update__button" onclick="updateClicked" value="Update" readonly="readonly">
+            <button type="button" class="update__button" onclick="updateClicked">Update</button>
         </div>
     </div>
     <div class="notice">Tickets are only valid for use on the day of purchase</div>
     <div class="order order--order-now">
-        <input type="submit" class="order__button" Text="Order now >>" />
+        <button type="submit" class="order__button">Order now >></button>
     </div>
     @Html.ValidationMessageFor(m => m.MovieOrderRows);
 }

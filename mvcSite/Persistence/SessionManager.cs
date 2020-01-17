@@ -16,10 +16,20 @@ namespace mvcSite.Persistence
             this.sessionWrapper = sessionWrapper;
         }
 
-        public IEnumerable<OrderLine> NonZeroOrderLines
+        public IEnumerable<OrderLine> OrderLines//rename, shouldn't have to know about UI 
         {
             get { return sessionWrapper.GetSession()["NonZeroOrderLines"] as IEnumerable<OrderLine>; }
             set { sessionWrapper.GetSession()["NonZeroOrderLines"] = value; }
+        }
+
+        public decimal Total
+        {
+            get {
+                HttpSessionState currentSession = sessionWrapper.GetSession();
+                decimal? storedTotal = currentSession["Total"] as decimal?;
+                return storedTotal.Value;
+            }
+            set { sessionWrapper.GetSession()["Total"] = value; }
         }
 
         public Customer CustomerData

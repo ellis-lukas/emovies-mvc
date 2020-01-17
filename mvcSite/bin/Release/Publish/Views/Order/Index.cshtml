@@ -30,10 +30,8 @@
 
             <div class="form-row form-row--lower">
                 <div class="form-row__label-input-container">
-                    @*<label for="CardType" class="form-row__cell form-row__cell--label">@Html.DisplayNameFor(m => m.CardType)</label>*@
-                    @*@Html.DropDownList("CardType", (SelectList)ViewBag.CardType, htmlAttributes: new { @class = "form-row__cell--card-type form-row__cell form-row__cell--input form-row__cell--select form-row__cell--white" })*@
                     @Html.LabelFor(m => m.CardType, htmlAttributes: new { @class = "form-row__cell form-row__cell--label" })
-                    @Html.EnumDropDownListFor(m => m.CardType, new { @class = "form-group form-row__cell--card-type form-row__cell form-row__cell--input form-row__cell--select form-row__cell--white" })
+                    @Html.DropDownListFor(m => m.CardType, ViewBag.CardTypeSelectList as IEnumerable<SelectListItem>, htmlAttributes : new { @class = "form-row__cell--card-type form-row__cell form-row__cell--input form-row__cell--select form-row__cell--white" })
                 </div>
             </div>
 
@@ -52,7 +50,7 @@
         </div>
     </div>
     <div class="order order--submit-order">
-        <input type="submit" class="order__button" Text="Submit order >>" />
+        <button type="submit" class="order__button">Submit order >></button>
     </div>
  
     @section Scripts {

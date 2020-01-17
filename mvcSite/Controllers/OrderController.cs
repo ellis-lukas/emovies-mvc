@@ -18,8 +18,8 @@ namespace mvcSite.Controllers
         private readonly SessionManager _sessionManager;
         private readonly OrderViewModelBuilder _orderViewModelBuilder;
 
-        public OrderController(OrderViewModelBuilder orderViewModelBuilder, 
-            OrderCreationService orderCreationService, 
+        public OrderController(OrderViewModelBuilder orderViewModelBuilder,
+            OrderCreationService orderCreationService,
             SessionManager sessionManager)
         {
             _orderViewModelBuilder = orderViewModelBuilder;
@@ -30,6 +30,14 @@ namespace mvcSite.Controllers
         // GET: Order
         public ActionResult Index()
         {
+            IEnumerable<SelectListItem> cardTypeSelectList = new List<SelectListItem>() { 
+                    new SelectListItem() { Text = "Mastercard", Value = "Mastercard" },
+                    new SelectListItem() { Text = "Visa", Value = "Visa" },
+                    new SelectListItem() { Text = "American Express", Value = "American Express" },
+                    new SelectListItem() { Text = "Discover", Value = "Discover" }
+                };
+
+            ViewBag.CardTypeSelectList = cardTypeSelectList;
             OrderViewModel orderViewModel = _orderViewModelBuilder.BuildOrderViewModel();
 
             return View(orderViewModel);
@@ -43,15 +51,15 @@ namespace mvcSite.Controllers
             {
                 try
                 {
-                    ValidateModel(orderData);
-
                     Customer customerForOrderViewModel = _orderViewModelBuilder.BuildCustomerFromOrderViewModel(orderData);
-                    IEnumerable<OrderLine> nonZeroOrderLines = _sessionManager.NonZeroOrderLines;
+                    IEnumerable<OrderLine> nonZeroOrderLines = _sessionManager.OrderLines;
+                    decimal orderTotal = _sessionManager.Total;
 
                     StagedDataForWriting stagedDataForWriting = new StagedDataForWriting
                     {
                         Customer = customerForOrderViewModel,
-                        OrderLines = nonZeroOrderLines
+                        OrderLines = nonZeroOrderLines,
+                        Total = orderTotal
                     };
 
                     _orderCreationService.CreateOrders(stagedDataForWriting);
@@ -61,11 +69,27 @@ namespace mvcSite.Controllers
                 }
                 catch
                 {
+                    IEnumerable<SelectListItem> cardTypeSelectList = new List<SelectListItem>() {
+                        new SelectListItem() { Text = "Mastercard", Value = "Mastercard" },
+                        new SelectListItem() { Text = "Visa", Value = "Visa" },
+                        new SelectListItem() { Text = "American Express", Value = "American Express" },
+                        new SelectListItem() { Text = "Discover", Value = "Discover" }
+                    };
+
+                    ViewBag.CardTypeSelectList = cardTypeSelectList;
                     return View(orderData);
                 }
             }
             else
             {
+                IEnumerable<SelectListItem> cardTypeSelectList = new List<SelectListItem>() {
+                    new SelectListItem() { Text = "Mastercard", Value = "Mastercard" },
+                    new SelectListItem() { Text = "Visa", Value = "Visa" },
+                    new SelectListItem() { Text = "American Express", Value = "American Express" },
+                    new SelectListItem() { Text = "Discover", Value = "Discover" }
+                };
+
+                ViewBag.CardTypeSelectList = cardTypeSelectList;
                 return View(orderData);
             }
         }

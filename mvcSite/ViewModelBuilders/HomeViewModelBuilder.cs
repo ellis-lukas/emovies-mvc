@@ -1,9 +1,9 @@
-﻿using mvcSite.IEnumerableExtensions;
-using mvcSite.Models;
+﻿using mvcSite.Models;
 using mvcSite.Persistence;
 using mvcSite.Repositories;
 using mvcSite.ViewModels.Home;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace mvcSite.ViewModelBuilders
 {
@@ -30,7 +30,7 @@ namespace mvcSite.ViewModelBuilders
             return homeViewModel;
         }
 
-        public List<MovieOrderRow> BuildMovieOrderRowsWithZeroAsQuantityOrdered()
+        private List<MovieOrderRow> BuildMovieOrderRowsWithZeroAsQuantityOrdered()
         {
             IEnumerable<Movie> movies = _movieRepository.GetMovies();
             List<MovieOrderRow> moviesWithZeroAsQuantityOrdered = new List<MovieOrderRow>();
@@ -51,14 +51,19 @@ namespace mvcSite.ViewModelBuilders
             return moviesWithZeroAsQuantityOrdered;
         }
 
-        public void SaveNonZeroOrderLinesFromHomeViewModel(HomeViewModel movieOrderData)
+        public void SaveMovieOrderDataFromHomeViewModel(HomeViewModel movieOrderData)
         {
             IEnumerable<OrderLine> dataAsOrderLines = ConvertHomeViewModelToOrderLines(movieOrderData);
-            IEnumerable<OrderLine> nonZeroOrderLines = dataAsOrderLines.RemoveZeroQuantityOrderLines();
-            _sessionManager.NonZeroOrderLines = nonZeroOrderLines;
+            UpdatePricesToOfficialValues(dataAsOrderLines);
+            IEnumerable<OrderLine> nonZeroQuantityOrderLines = RemoveZeroQuantityOrderLines(dataAsOrderLines);
+
+            decimal orderTotal = TotalOrderLines(dataAsOrderLines);
+
+            _sessionManager.OrderLines = nonZeroQuantityOrderLines;
+            _sessionManager.Total = orderTotal;
         }
 
-        public IEnumerable<OrderLine> ConvertHomeViewModelToOrderLines(HomeViewModel homeViewModel)
+        private IEnumerable<OrderLine> ConvertHomeViewModelToOrderLines(HomeViewModel homeViewModel)
         {
             List<OrderLine> orderLines = new List<OrderLine>();
             IEnumerable<MovieOrderRow> movieOrderRows = homeViewModel.MovieOrderRows;
@@ -76,6 +81,45 @@ namespace mvcSite.ViewModelBuilders
             }
 
             return orderLines;
+        }
+
+        private void UpdatePricesToOfficialValues(IEnumerable<OrderLine> dataAsOrderLines)
+        {
+            foreach(OrderLine orderLine in dataAsOrderLines)
+            {
+                int movieID = orderLine.MovieID;
+                Movie associatedMovie = _movieRepository.GetMovieByID(movieID);
+                decimal officialMoviePrice = associatedMovie.Price;
+
+                orderLine.Price = officialMoviePrice;
+            }
+        }
+
+        private IEnumerable<OrderLine> RemoveZeroQuantityOrderLines(IEnumerable<OrderLine> orderLines)
+        {
+            List<OrderLine> nonZeroQuantityOrderLines = orderLines.ToList();
+
+            foreach (OrderLine orderLine in orderLines)
+            {
+                if (orderLine.Quantity == 0)
+                {
+                    nonZeroQuantityOrderLines.Remove(orderLine);
+                }
+            }
+
+            return nonZeroQuantityOrderLines;
+        }
+
+        private decimal TotalOrderLines(IEnumerable<OrderLine> orderLines)
+        {
+            decimal total = 0.0m;
+
+            foreach (OrderLine orderLine in orderLines)
+            {
+                total += orderLine.Quantity * orderLine.Price;
+            }
+
+            return total;
         }
     }
 }

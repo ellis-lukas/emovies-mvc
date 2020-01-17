@@ -42,6 +42,10 @@
     <div class="summary">
         <h2>Your tickets</h2>
         @Html.DisplayFor(m => m.SummaryRows)
+        <div class="total total--summary">
+            <div class="total__cell total__cell--label total__cell--label-summary">Total</div>
+            <label id="TotalValue" class="total__cell total__cell--value total__cell--value-summary">@Html.DisplayFor(m => m.Total)</label>
+        </div>
     </div>
 </div>
 
