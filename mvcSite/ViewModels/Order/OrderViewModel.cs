@@ -13,10 +13,12 @@ namespace mvcSite.ViewModels.Order
         [StringLength(254)]
         public string Email { get; set; }
 
+        [Display(Name = "Credit card number")]
         [RegularExpression(@"\s*([0-9]\s*){15,19}", ErrorMessage = "Please enter a valid card number")]
         [Required(ErrorMessage = "Please enter your card number")]
         public string CardNumber { get; set; }
 
+        [Display(Name = "Credit card type")]
         [Required]
         public string CardType { get; set; }
 

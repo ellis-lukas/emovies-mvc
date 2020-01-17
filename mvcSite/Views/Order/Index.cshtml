@@ -23,7 +23,7 @@
             </div>
 
             <div class="form-row form-row--upper">
-                @Html.LabelFor(m => m.CardNumber, "Card Number", htmlAttributes: new { @class = "form-row__cell form-row__cell--label" })
+                @Html.LabelFor(m => m.CardNumber, htmlAttributes: new { @class = "form-row__cell form-row__cell--label" })
                 @Html.EditorFor(m => m.CardNumber, new { htmlAttributes = new { @class = "form-row__cell form-row__cell--input form-row__cell--text form-row__cell--white form-row__cell--card-number" } })
                 @Html.ValidationMessageFor(m => m.CardNumber, null, htmlAttributes: new { @class = "form-row__validation-message" })
             </div>
